@@ -1,14 +1,17 @@
 import { Routes, Route } from "react-router-dom";
+import { SocketContext, socket } from "./contexts/socket";
 import SignUpPage from "./pages/SignUpPage";
 
 function App() {
   return (
-    <Routes>
-      <Route path='/' element={<SignUpPage />} />
-      {/* <Route path='qrcode' element={<QRCodePage />} />
+    <SocketContext.Provider value={socket}>
+      <Routes>
+        <Route path='/' element={<SignUpPage />} />
+        {/* <Route path='qrcode' element={<QRCodePage />} />
       <Route path='user/:key' element={<UserViewPage />} />
       <Route path=':key' element={<ServerViewPage />} /> */}
-    </Routes>
+      </Routes>
+    </SocketContext.Provider>
   );
 }
 
