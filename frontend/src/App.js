@@ -3,6 +3,7 @@ import { Box } from "@chakra-ui/react";
 import { SocketContext, socket } from "./contexts/socket";
 import SignUpPage from "./pages/SignUpPage";
 import UserViewPage from "./pages/UserViewPage";
+import ServerViewPage from "./pages/ServerViewPage";
 import QRCodePage from "./pages/QRCodePage";
 
 function App() {
@@ -12,7 +13,7 @@ function App() {
         <Routes>
           <Route path='/' element={<SignUpPage />} />
           <Route path='qrcode' element={<QRCodePage />} />
-      {/* <Route path=':key' element={<ServerViewPage />} /> */}
+          <Route path=':key' element={<ServerViewPage />} />
           <Route path='user/:key' element={<UserViewPage />} />
         </Routes>
       </SocketContext.Provider>

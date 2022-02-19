@@ -1,5 +1,4 @@
 import {
-  Flex,
   Avatar,
   Box,
   Center,
@@ -7,7 +6,6 @@ import {
   Heading,
   Stack,
   Button,
-  Spacer,
 } from "@chakra-ui/react";
 import { FaPencilAlt, FaMoneyBillAlt } from "react-icons/fa";
 import { BsChatTextFill } from "react-icons/bs";
