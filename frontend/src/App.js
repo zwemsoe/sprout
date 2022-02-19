@@ -1,17 +1,22 @@
 import { Routes, Route } from "react-router-dom";
+import { Box } from "@chakra-ui/react";
 import { SocketContext, socket } from "./contexts/socket";
 import SignUpPage from "./pages/SignUpPage";
+import UserViewPage from "./pages/UserViewPage";
 
 function App() {
   return (
-    <SocketContext.Provider value={socket}>
-      <Routes>
-        <Route path='/' element={<SignUpPage />} />
-        {/* <Route path='qrcode' element={<QRCodePage />} />
+    <Box bg='green'>
+      <SocketContext.Provider value={socket}>
+        <Routes>
+          <Route path='/' element={<SignUpPage />} />
+          {/* <Route path='qrcode' element={<QRCodePage />} />
       <Route path='user/:key' element={<UserViewPage />} />
       <Route path=':key' element={<ServerViewPage />} /> */}
-      </Routes>
-    </SocketContext.Provider>
+          <Route path='user/:key' element={<UserViewPage />} />
+        </Routes>
+      </SocketContext.Provider>
+    </Box>
   );
 }
 
