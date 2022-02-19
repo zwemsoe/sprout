@@ -1,5 +1,5 @@
 import {
-  Textarea,
+  Input,
   Text,
   Menu,
   MenuButton,
@@ -32,7 +32,7 @@ export default function SignUpPage() {
             </Text>
           </Stack>
           <Stack pt={10}>
-            <Textarea
+            <Input
               placeholder={namePlaceHolder}
               minHeight="34px"
               backgroundColor="white"
@@ -53,6 +53,9 @@ export default function SignUpPage() {
                 </MenuItem>
               </MenuList>
             </Menu>
+            <Button>
+              Sign Up
+            </Button>
           </Stack>
         </Stack>
       </Center>
