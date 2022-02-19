@@ -1,0 +1,24 @@
+{
+  "name": "sprout",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "setup": "npm install --prefix frontend && npm install --prefix backend && npm install",
+    "dev": "concurrently -p \"[{name}]\" -n \"BACKEND,FRONTEND\" -c \"bgBlue.bold,bgYellow.bold\" \"npm run dev --prefix be\" \"npm run dev --prefix fe\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zwemsoe/sprout.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/zwemsoe/sprout/issues"
+  },
+  "homepage": "https://github.com/zwemsoe/sprout#readme",
+  "devDependencies": {
+    "concurrently": "^7.0.0"
+  }
+}
