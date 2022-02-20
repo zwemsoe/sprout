@@ -3,7 +3,7 @@ const cors = require("cors");
 const socket = require("./socket");
 const { createServer } = require("http");
 // const mongoose = require("mongoose");
-const { nanoid } = require('nanoid')
+const { nanoid } = require("nanoid");
 
 const app = express();
 const server = createServer(app);
@@ -41,8 +41,9 @@ app.get("/", (req, res) => {
 });
 
 app.post("/signup", (req, res) => {
-  const id = nanoid()
-  res.send({...req.body, id})
+  const id = nanoid();
+  let events = [];
+  res.send({ ...req.body, id, events });
 });
 
 const port = process.env.PORT || 5000;

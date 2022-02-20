@@ -20,16 +20,33 @@ import {
 } from "@chakra-ui/react";
 import { FaPencilAlt, FaMoneyBillAlt } from "react-icons/fa";
 import { BsChatTextFill } from "react-icons/bs";
-import { getLocalStorage } from "../utils/localstorage";
-import { useState } from "react";
+import { getLocalStorage, updateLocalStorage } from "../utils/localstorage";
+import { SocketContext } from "../contexts/socket";
+import { useContext, useState } from "react";
 
 export default function UserViewPage() {
   const user = getLocalStorage("user");
-
   const [orderValue, setOrderValue] = useState("");
   const [paymentValue, setPaymentValue] = useState("");
   const [messageValue, setMessageValue] = useState("");
   const { isOpen, onOpen, onClose } = useDisclosure();
+
+  const eventTypeEnum = {
+    ORDER: "Order",
+    PAY_BILL: "Pay Bill",
+    MESSAGE: "Message",
+  };
+  const socket = useContext(SocketContext);
+
+  const handleSendEvent = (event) => {
+    let user = getLocalStorage("user");
+    console.log(user.events);
+    user.events.push(event);
+    console.log(user.events);
+    updateLocalStorage("user", user);
+    /// emit socket event to join room
+    socket.emit("user:send_event", user);
+  };
 
   return (
     <Box minHeight="100vh">
@@ -55,6 +72,8 @@ export default function UserViewPage() {
             setValue={setOrderValue}
             buttonText="Make an order"
             icon={<FaPencilAlt />}
+            handleSendEvent={handleSendEvent}
+            operation={eventTypeEnum.ORDER}
           />
 
           <Button
@@ -81,7 +100,18 @@ export default function UserViewPage() {
               </ModalBody>
 
               <ModalFooter>
-                <Button colorScheme="blue" mr={3} onClick={onClose}>
+                <Button
+                  colorScheme="blue"
+                  mr={3}
+                  onClick={() => {
+                    handleSendEvent({
+                      created_at: new Date(Date.now()),
+                      type: eventTypeEnum.PAY_BILL,
+                      details: paymentValue,
+                    });
+                    onClose()
+                  }}
+                >
                   Submit
                 </Button>
               </ModalFooter>
@@ -95,6 +125,8 @@ export default function UserViewPage() {
             setValue={setMessageValue}
             buttonText="Send message"
             icon={<BsChatTextFill />}
+            handleSendEvent={handleSendEvent}
+            operation={eventTypeEnum.MESSAGE}
           />
         </Stack>
       </Center>
@@ -109,9 +141,10 @@ const EventButton = ({
   setValue,
   buttonText,
   icon,
+  handleSendEvent,
+  operation,
 }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-
   return (
     <>
       <Button
@@ -136,7 +169,18 @@ const EventButton = ({
           </ModalBody>
 
           <ModalFooter>
-            <Button colorScheme="blue" mr={3} onClick={onClose}>
+            <Button
+              colorScheme="blue"
+              mr={3}
+              onClick={() => {
+                handleSendEvent({
+                  created_at: new Date(Date.now()),
+                  type: operation,
+                  details: value,
+                });
+                onClose()
+              }}
+            >
               Submit
             </Button>
           </ModalFooter>

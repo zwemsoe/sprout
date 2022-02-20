@@ -21,7 +21,7 @@ import {
 import { useContext, useEffect, useState } from "react";
 import { SocketContext } from "../contexts/socket";
 import { useParams } from "react-router-dom";
-import { updateLocalStorage } from "../utils/localstorage";
+import { getLocalStorage, updateLocalStorage } from "../utils/localstorage";
 
 export default function ServerViewPage() {
   const { id } = useParams();
@@ -36,6 +36,13 @@ export default function ServerViewPage() {
     socket.on("web:save_user_data", ({ user }) => {
       updateLocalStorage(user.id, user);
       setUser(user);
+    });
+
+    socket.on("web:save_event_data", (user) => {
+      let preExistingUser = getLocalStorage(user.id)
+      preExistingUser.events = [...user.events]
+      console.log(preExistingUser.events)
+      updateLocalStorage(user.id, preExistingUser);
     });
   }, []);
 
