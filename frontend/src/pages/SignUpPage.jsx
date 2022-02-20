@@ -17,6 +17,7 @@ import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { updateLocalStorage } from "../utils/localstorage";
 import { SocketContext } from "../contexts/socket";
+import { server_url } from "../constants";
 
 export default function SignUpPage() {
   const namePlaceHolder = "Your Name";
@@ -34,7 +35,7 @@ export default function SignUpPage() {
   const navigate = useNavigate();
 
   const handleSubmit = () => {
-    fetch("http://localhost:5000/signup", {
+    fetch(`${server_url}/signup`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -54,13 +55,13 @@ export default function SignUpPage() {
   };
 
   return (
-    <Flex minHeight="100vh" align="center" justify="center">
+    <Flex minHeight='100vh' align='center' justify='center'>
       <Center>
-        <Stack direction="column" width={300}>
+        <Stack direction='column' width={300}>
           <Center>
             <Heading size='3xl'>Welcome!</Heading>
           </Center>
-          <Text textAlign="center" fontWeight={500}>
+          <Text textAlign='center' fontWeight={500}>
             Fill in your information
             <br />
             to get started
@@ -68,17 +69,17 @@ export default function SignUpPage() {
           <Stack pt={10}>
             <Input
               placeholder={namePlaceHolder}
-              minHeight="34px"
-              backgroundColor="white"
+              minHeight='34px'
+              backgroundColor='white'
               onChange={(e) => setName(e.target.value)}
             />
             <Menu closeOnSelect={false}>
               <MenuButton as={Button} rightIcon={<ChevronDownIcon />}>
-                <Text align="left" color="gray" fontWeight={400}>
+                <Text align='left' color='gray' fontWeight={400}>
                   {impairment ? impairment : needsPlaceHolder}
                 </Text>
               </MenuButton>
-              <MenuList minWidth="304px">
+              <MenuList minWidth='304px'>
                 <MenuItem>
                   <Checkbox
                     onChange={(e) => {
@@ -111,7 +112,7 @@ export default function SignUpPage() {
                 </MenuItem>
               </MenuList>
             </Menu>
-            <Button onClick={handleSubmit} backgroundColor="yellow">
+            <Button onClick={handleSubmit} backgroundColor='yellow'>
               Sign Up
             </Button>
           </Stack>
