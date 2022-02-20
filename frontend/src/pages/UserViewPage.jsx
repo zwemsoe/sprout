@@ -1,6 +1,5 @@
 import {
   Avatar,
-  Box,
   Center,
   Text,
   Heading,
@@ -17,6 +16,7 @@ import {
   Textarea,
   RadioGroup,
   Radio,
+  Flex,
 } from "@chakra-ui/react";
 import { FaPencilAlt, FaMoneyBillAlt } from "react-icons/fa";
 import { BsChatTextFill } from "react-icons/bs";
@@ -48,38 +48,38 @@ export default function UserViewPage() {
   };
 
   return (
-    <Box minHeight='100vh'>
-      <Center pt={10}>
+    <Flex minHeight="100vh" align="center" justify="center">
+      <Stack direction="column" width={300}>
+      <Center>
         <Heading>Scan Success!</Heading>
       </Center>
-      <Center flexDirection='column' pt={10}>
+      <Center flexDirection="column" pt={10}>
         <Avatar
-          name='Dan Abrahmov'
+          name={`${user.name}`}
           src={`https://avatars.dicebear.com/api/jdenticon/${user.id}.svg`}
-          size='2xl'
+          size="2xl"
         />
-        <Text pt={5} fontSize='2em'>
+        <Text pt={5} fontSize="2em">
           {user.name}
         </Text>
       </Center>
-      <Center pt='100px'>
-        <Stack direction='column' spacing={5} width={300}>
+      <Center pt={10}>
+        <Stack direction="column" spacing={5} width={300}>
           <EventButton
-            header='Make an order'
+            header="Make an order"
             value={orderValue}
-            placeholder='Please enter what you would like to order!'
+            placeholder="Please enter what you would like to order!"
             setValue={setOrderValue}
-            buttonText='Make an order'
+            buttonText="Make an order"
             icon={<FaPencilAlt />}
             handleSendEvent={handleSendEvent}
             operation={EventType.Order}
           />
-
           <Button
             onClick={onOpen}
             leftIcon={<FaMoneyBillAlt />}
-            colorScheme='teal'
-            variant='solid'
+            bgColor="yellow"
+            variant="solid"
           >
             Make payment
           </Button>
@@ -90,17 +90,16 @@ export default function UserViewPage() {
               <ModalCloseButton />
               <ModalBody>
                 <RadioGroup onChange={setPaymentValue} value={paymentValue}>
-                  <Stack direction='column'>
-                    <Radio value='Cash'>Cash</Radio>
-                    <Radio value='Credit'>Credit</Radio>
-                    <Radio value='Debit'>Debit</Radio>
+                  <Stack direction="column">
+                    <Radio value="Cash">Cash</Radio>
+                    <Radio value="Credit">Credit</Radio>
+                    <Radio value="Debit">Debit</Radio>
                   </Stack>
                 </RadioGroup>
               </ModalBody>
-
               <ModalFooter>
                 <Button
-                  colorScheme='blue'
+                  colorScheme="blue"
                   mr={3}
                   onClick={() => {
                     handleSendEvent({
@@ -116,20 +115,20 @@ export default function UserViewPage() {
               </ModalFooter>
             </ModalContent>
           </Modal>
-
           <EventButton
-            header='Message'
+            header="Message"
             value={messageValue}
-            placeholder='Please enter a message for your server!'
+            placeholder="Please enter a message for your server!"
             setValue={setMessageValue}
-            buttonText='Send message'
+            buttonText="Send message"
             icon={<BsChatTextFill />}
             handleSendEvent={handleSendEvent}
             operation={EventType.Message}
           />
         </Stack>
       </Center>
-    </Box>
+      </Stack>
+    </Flex>
   );
 }
 
@@ -146,12 +145,7 @@ const EventButton = ({
   const { isOpen, onOpen, onClose } = useDisclosure();
   return (
     <>
-      <Button
-        onClick={onOpen}
-        leftIcon={icon}
-        colorScheme='teal'
-        variant='solid'
-      >
+      <Button onClick={onOpen} leftIcon={icon} bgColor="yellow" variant="solid">
         {buttonText}
       </Button>
       <Modal isOpen={isOpen} onClose={onClose}>
@@ -166,10 +160,9 @@ const EventButton = ({
               placeholder={placeholder}
             />
           </ModalBody>
-
           <ModalFooter>
             <Button
-              colorScheme='blue'
+              colorScheme="blue"
               mr={3}
               onClick={() => {
                 handleSendEvent({

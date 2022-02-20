@@ -9,7 +9,8 @@ import {
   Checkbox,
   Center,
   Stack,
-  Box,
+  Flex,
+  Heading,
 } from "@chakra-ui/react";
 import { ChevronDownIcon } from "@chakra-ui/icons";
 import { useContext, useEffect, useState } from "react";
@@ -29,6 +30,7 @@ export default function SignUpPage() {
     hearing: false,
     motor: false,
   });
+  const [impairment, setImpairments] = useState("");
   const navigate = useNavigate();
 
   const handleSubmit = () => {
@@ -52,66 +54,69 @@ export default function SignUpPage() {
   };
 
   return (
-    <Box minHeight='100vh'>
+    <Flex minHeight="100vh" align="center" justify="center">
       <Center>
-        <Stack direction='column' width={300}>
-          <Stack pt={10}>
-            <Center>
-              <Text fontSize='5xl' fontWeight={800}>
-                Welcome!
-              </Text>
-            </Center>
-            <Text textAlign={"center"}>
-              Fill in your information below to get started
-            </Text>
-          </Stack>
+        <Stack direction="column" width={300}>
+          <Center>
+            <Heading size='3xl'>Welcome!</Heading>
+          </Center>
+          <Text textAlign="center" fontWeight={500}>
+            Fill in your information
+            <br />
+            to get started
+          </Text>
           <Stack pt={10}>
             <Input
               placeholder={namePlaceHolder}
-              minHeight='34px'
-              backgroundColor='white'
+              minHeight="34px"
+              backgroundColor="white"
               onChange={(e) => setName(e.target.value)}
             />
             <Menu closeOnSelect={false}>
               <MenuButton as={Button} rightIcon={<ChevronDownIcon />}>
-                <Text align='left' color='gray'>
-                  {needsPlaceHolder}
+                <Text align="left" color="gray" fontWeight={400}>
+                  {impairment ? impairment : needsPlaceHolder}
                 </Text>
               </MenuButton>
-              <MenuList minWidth='304px'>
+              <MenuList minWidth="304px">
                 <MenuItem>
                   <Checkbox
-                    onChange={(e) =>
-                      setNeeds({ ...needs, speech: e.target.checked })
-                    }
+                    onChange={(e) => {
+                      setNeeds({ ...needs, speech: e.target.checked });
+                      setImpairments("Speech");
+                    }}
                   >
                     Speech Impairment
                   </Checkbox>
                 </MenuItem>
                 <MenuItem>
                   <Checkbox
-                    onChange={(e) =>
-                      setNeeds({ ...needs, hearing: e.target.checked })
-                    }
+                    onChange={(e) => {
+                      setNeeds({ ...needs, hearing: e.target.checked });
+                      setImpairments("Hearing");
+                    }}
                   >
                     Hearing Impairment
                   </Checkbox>
                 </MenuItem>
                 <MenuItem>
                   <Checkbox
-                    onChange={(e) =>
-                      setNeeds({ ...needs, motor: e.target.checked })
-                    }
+                    onChange={(e) => {
+                      setNeeds({ ...needs, motor: e.target.checked });
+                      setImpairments("Motor");
+                    }}
                   >
                     Motor Impairment
                   </Checkbox>
                 </MenuItem>
               </MenuList>
             </Menu>
-            <Button onClick={handleSubmit}>Sign Up</Button>
+            <Button onClick={handleSubmit} backgroundColor="yellow">
+              Sign Up
+            </Button>
           </Stack>
         </Stack>
       </Center>
-    </Box>
+    </Flex>
   );
 }
