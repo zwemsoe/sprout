@@ -37,7 +37,7 @@ export default function SignUpPage() {
               minHeight="34px"
               backgroundColor="white"
             />
-            <Menu>
+            <Menu closeOnSelect={false}>
               <MenuButton as={Button} rightIcon={<ChevronDownIcon />}>
                 <Text align="left" color='gray'>{needsPlaceHolder}</Text>
               </MenuButton>
