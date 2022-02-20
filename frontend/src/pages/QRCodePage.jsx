@@ -1,7 +1,5 @@
 import {
   Avatar,
-  AvatarBadge,
-  AvatarGroup,
   Box,
   Center,
   Heading,
@@ -9,8 +7,11 @@ import {
 } from "@chakra-ui/react";
 import { Wrap, WrapItem } from "@chakra-ui/react";
 import QRCode from "qrcode.react";
+import { getLocalStorage } from "../utils/localstorage";
 
 export default function QRCodePage() {
+  const user = getLocalStorage("user")
+
   return (
     <div id="doqr">
       <Box minHeight="100vh">
@@ -19,7 +20,7 @@ export default function QRCodePage() {
             <WrapItem>
               <Avatar
                 name="Dan Abrahmov"
-                src="https://bit.ly/dan-abramov"
+                src={`https://avatars.dicebear.com/api/jdenticon/${user.id}.svg`}
                 size="2xl"
               />{" "}
             </WrapItem>
@@ -27,7 +28,7 @@ export default function QRCodePage() {
         </Center>
 
         <Center pt={5}>
-          <Heading> Hello User,</Heading>
+          <Heading> Hello {`${user.name}`},</Heading>
         </Center>
 
         <Center pt={50} textAlign="center">
@@ -38,7 +39,7 @@ export default function QRCodePage() {
 
         <Center pt={50}>
           <Box maxW="sm" borderWidth="10px" borderRadius="md" overflow="show">
-            <QRCode value="https://github.com/zwemsoe/sprout/" />
+            <QRCode value={`http://localhost:3000/${user.id}`} />
           </Box>
         </Center>
       </Box>
