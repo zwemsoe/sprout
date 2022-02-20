@@ -13,7 +13,7 @@ import {
   Heading,
 } from "@chakra-ui/react";
 import { ChevronDownIcon } from "@chakra-ui/icons";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { updateLocalStorage } from "../utils/localstorage";
 import { SocketContext } from "../contexts/socket";
@@ -31,7 +31,6 @@ export default function SignUpPage() {
     hearing: false,
     motor: false,
   });
-  const [impairment, setImpairments] = useState("");
   const navigate = useNavigate();
 
   const handleSubmit = () => {
@@ -76,36 +75,38 @@ export default function SignUpPage() {
             <Menu closeOnSelect={false}>
               <MenuButton as={Button} rightIcon={<ChevronDownIcon />}>
                 <Text align='left' color='gray' fontWeight={400}>
-                  {impairment ? impairment : needsPlaceHolder}
+                  {`${
+                    Object.keys(needs)
+                      .filter((n) => needs[n])
+                      .map((n) => `${n.charAt(0).toUpperCase() + n.slice(1)}`)
+                      .join(", ") || needsPlaceHolder
+                  }`}
                 </Text>
               </MenuButton>
               <MenuList minWidth='304px'>
                 <MenuItem>
                   <Checkbox
-                    onChange={(e) => {
-                      setNeeds({ ...needs, speech: e.target.checked });
-                      setImpairments("Speech");
-                    }}
+                    onChange={(e) =>
+                      setNeeds({ ...needs, speech: e.target.checked })
+                    }
                   >
                     Speech Impairment
                   </Checkbox>
                 </MenuItem>
                 <MenuItem>
                   <Checkbox
-                    onChange={(e) => {
-                      setNeeds({ ...needs, hearing: e.target.checked });
-                      setImpairments("Hearing");
-                    }}
+                    onChange={(e) =>
+                      setNeeds({ ...needs, hearing: e.target.checked })
+                    }
                   >
                     Hearing Impairment
                   </Checkbox>
                 </MenuItem>
                 <MenuItem>
                   <Checkbox
-                    onChange={(e) => {
-                      setNeeds({ ...needs, motor: e.target.checked });
-                      setImpairments("Motor");
-                    }}
+                    onChange={(e) =>
+                      setNeeds({ ...needs, motor: e.target.checked })
+                    }
                   >
                     Motor Impairment
                   </Checkbox>
