@@ -29,6 +29,10 @@ export default function QRCodePage() {
     });
   }, []);
 
+  useEffect(() => {
+    socket.emit("user:join_room", { user });
+  }, []);
+
   return (
     <div id='doqr'>
       <Flex minHeight='100vh' align='center' justify='center'>
