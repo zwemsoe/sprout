@@ -4,6 +4,7 @@ const socket = require("./socket");
 const { createServer } = require("http");
 // const mongoose = require("mongoose");
 const { nanoid } = require("nanoid");
+const { client_url } = require("./constants");
 
 const app = express();
 const server = createServer(app);
@@ -30,7 +31,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(
   cors({
-    origin: ["http://localhost:3000"],
+    origin: ["http://localhost:3000", client_url],
   })
 );
 

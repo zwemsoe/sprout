@@ -1,5 +1,6 @@
 const { Server } = require("socket.io");
-const url = "http://localhost:3000";
+const { client_url } = require("./constants");
+const url = client_url;
 
 module.exports = (server) => {
   const io = new Server(server, {
