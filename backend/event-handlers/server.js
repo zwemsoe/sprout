@@ -6,6 +6,6 @@ module.exports = (socket, io) => {
 
   //user leaves
   socket.on("disconnect", (reason) => {
-    console.log("disconnecting: ");
+    console.log("disconnecting ");
   });
 };
