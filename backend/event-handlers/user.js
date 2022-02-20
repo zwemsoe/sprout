@@ -8,6 +8,10 @@ module.exports = (socket, io) => {
     socket.emit("web:scan_success");
   });
 
+  socket.on("user:send_event", (user) => {
+    socket.to(user.id).emit("web:save_event_data", user)
+  })
+
   //user leaves
   socket.on("disconnect", (reason) => {
     console.log("disconnecting: ");
