@@ -5,6 +5,7 @@ module.exports = (socket, io) => {
 
   socket.on("user:receive_user_data", ({ user }) => {
     socket.to(user.id).emit("web:save_user_data", { user });
+    socket.emit("web:scan_success");
   });
 
   //user leaves

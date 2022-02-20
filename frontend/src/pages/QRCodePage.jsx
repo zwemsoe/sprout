@@ -4,14 +4,19 @@ import QRCode from "qrcode.react";
 import { useContext, useEffect } from "react";
 import { SocketContext } from "../contexts/socket";
 import { getLocalStorage } from "../utils/localstorage";
+import { useNavigate } from "react-router-dom";
 
 export default function QRCodePage() {
   const user = getLocalStorage("user");
   const socket = useContext(SocketContext);
-
+  const navigate = useNavigate();
   useEffect(() => {
     socket.on("web:get_user_data", () => {
       socket.emit("user:receive_user_data", { user });
+    });
+
+    socket.on("web:scan_success", () => {
+      navigate(`/user/${user.id}`);
     });
   }, []);
 
