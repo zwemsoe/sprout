@@ -30,7 +30,7 @@ export default function UserViewPage() {
   const [paymentValue, setPaymentValue] = useState("");
   const [messageValue, setMessageValue] = useState("");
   const { isOpen, onOpen, onClose } = useDisclosure();
-  
+
   return (
     <Box minHeight="100vh">
       <Center pt={10}>
@@ -39,7 +39,7 @@ export default function UserViewPage() {
       <Center flexDirection="column" pt={10}>
         <Avatar
           name="Dan Abrahmov"
-          src="https://bit.ly/dan-abramov"
+          src={`https://avatars.dicebear.com/api/jdenticon/${user.id}.svg`}
           size="2xl"
         />
         <Text pt={5} fontSize="2em">

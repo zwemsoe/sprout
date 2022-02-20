@@ -58,7 +58,7 @@ export default function ServerViewPage() {
                 <Stack direction='row' spacing={7}>
                   <Avatar
                     name='Dan Abrahmov'
-                    src='https://bit.ly/dan-abramov'
+                    src={`https://avatars.dicebear.com/api/jdenticon/${user?.id}.svg`}
                     size='lg'
                   >
                     <AvatarBadge
