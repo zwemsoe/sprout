@@ -1,7 +1,10 @@
 module.exports = (socket, io) => {
-  socket.on("user_join", () => {
-    console.log("user joined: ");
-    io.emit("join");
+  socket.on("user:join_room", ({ user }) => {
+    socket.join(user.id);
+  });
+
+  socket.on("user:receive_user_data", ({ user }) => {
+    socket.to(user.id).emit("web:save_user_data", { user });
   });
 
   //user leaves

@@ -18,8 +18,27 @@ import {
   Th,
   Td,
 } from "@chakra-ui/react";
+import { useContext, useEffect, useState } from "react";
+import { SocketContext } from "../contexts/socket";
+import { useParams } from "react-router-dom";
+import { updateLocalStorage } from "../utils/localstorage";
 
 export default function ServerViewPage() {
+  const { id } = useParams();
+  const socket = useContext(SocketContext);
+  const [user, setUser] = useState();
+
+  useEffect(() => {
+    socket.emit("server:join_room", { id });
+  }, []);
+
+  useEffect(() => {
+    socket.on("web:save_user_data", ({ user }) => {
+      updateLocalStorage(user.id, user);
+      setUser(user);
+    });
+  }, []);
+
   return (
     <Box minHeight='100vh'>
       <Center pt={10}>
@@ -54,7 +73,7 @@ export default function ServerViewPage() {
                   <Center>
                     <Box flexDirection='column' textAlign='left'>
                       <Heading as='h6' size='md'>
-                        Customer
+                        {user?.name}
                       </Heading>
                       <Text size='md'>Impairments</Text>
                     </Box>

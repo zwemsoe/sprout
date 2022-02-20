@@ -13,8 +13,8 @@ function App() {
         <Routes>
           <Route path='/' element={<SignUpPage />} />
           <Route path='qrcode' element={<QRCodePage />} />
-          <Route path=':key' element={<ServerViewPage />} />
-          <Route path='user/:key' element={<UserViewPage />} />
+          <Route path=':id' element={<ServerViewPage />} />
+          <Route path='user/:id' element={<UserViewPage />} />
         </Routes>
       </SocketContext.Provider>
     </Box>

@@ -12,13 +12,16 @@ import {
   Box,
 } from "@chakra-ui/react";
 import { ChevronDownIcon } from "@chakra-ui/icons";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { updateLocalStorage } from '../utils/localstorage'
+import { updateLocalStorage } from "../utils/localstorage";
+import { SocketContext } from "../contexts/socket";
 
 export default function SignUpPage() {
   const namePlaceHolder = "Your Name";
   const needsPlaceHolder = "Your Needs";
+
+  const socket = useContext(SocketContext);
 
   const [name, setName] = useState("");
   const [needs, setNeeds] = useState({
@@ -26,7 +29,7 @@ export default function SignUpPage() {
     hearing: false,
     motor: false,
   });
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const handleSubmit = () => {
     fetch("http://localhost:5000/signup", {
@@ -38,25 +41,23 @@ export default function SignUpPage() {
     })
       .then((response) => response.json())
       .then((data) => {
-        updateLocalStorage("user", data)
-        navigate('/qrcode')
+        updateLocalStorage("user", data);
+        /// emit socket event to join room
+        socket.emit("user:join_room", { user: data });
+        navigate("/qrcode");
       })
       .catch((error) => {
         console.error("Error:", error);
       });
   };
 
-  useEffect(() => {
-    console.log(needs);
-  }, [needs]);
-
   return (
-    <Box minHeight="100vh">
+    <Box minHeight='100vh'>
       <Center>
-        <Stack direction="column" width={300}>
+        <Stack direction='column' width={300}>
           <Stack pt={10}>
             <Center>
-              <Text fontSize="5xl" fontWeight={800}>
+              <Text fontSize='5xl' fontWeight={800}>
                 Welcome!
               </Text>
             </Center>
@@ -67,17 +68,17 @@ export default function SignUpPage() {
           <Stack pt={10}>
             <Input
               placeholder={namePlaceHolder}
-              minHeight="34px"
-              backgroundColor="white"
+              minHeight='34px'
+              backgroundColor='white'
               onChange={(e) => setName(e.target.value)}
             />
             <Menu closeOnSelect={false}>
               <MenuButton as={Button} rightIcon={<ChevronDownIcon />}>
-                <Text align="left" color="gray">
+                <Text align='left' color='gray'>
                   {needsPlaceHolder}
                 </Text>
               </MenuButton>
-              <MenuList minWidth="304px">
+              <MenuList minWidth='304px'>
                 <MenuItem>
                   <Checkbox
                     onChange={(e) =>

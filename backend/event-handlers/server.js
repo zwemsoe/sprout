@@ -1,6 +1,7 @@
 module.exports = (socket, io) => {
-  socket.on("server_join", () => {
-    console.log("server joined: ");
+  socket.on("server:join_room", ({ id }) => {
+    socket.join(id);
+    socket.to(id).emit("web:get_user_data");
   });
 
   //user leaves
