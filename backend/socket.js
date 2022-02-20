@@ -11,7 +11,6 @@ module.exports = (server) => {
   io.on("connection", (socket) => {
     require("./event-handlers/user")(socket, io);
     require("./event-handlers/server")(socket, io);
-    console.log("connected");
   });
 
   return io;

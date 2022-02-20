@@ -22,7 +22,8 @@ import { FaPencilAlt, FaMoneyBillAlt } from "react-icons/fa";
 import { BsChatTextFill } from "react-icons/bs";
 import { getLocalStorage, updateLocalStorage } from "../utils/localstorage";
 import { SocketContext } from "../contexts/socket";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import { EventType } from "../constants";
 
 export default function UserViewPage() {
   const user = getLocalStorage("user");
@@ -31,56 +32,54 @@ export default function UserViewPage() {
   const [messageValue, setMessageValue] = useState("");
   const { isOpen, onOpen, onClose } = useDisclosure();
 
-  const eventTypeEnum = {
-    ORDER: "Order",
-    PAY_BILL: "Pay Bill",
-    MESSAGE: "Message",
-  };
   const socket = useContext(SocketContext);
+
+  useEffect(() => {
+    socket.on("web:get_user_data", () => {
+      socket.emit("user:receive_user_data", { user });
+    });
+  }, []);
 
   const handleSendEvent = (event) => {
     let user = getLocalStorage("user");
-    console.log(user.events);
     user.events.push(event);
-    console.log(user.events);
     updateLocalStorage("user", user);
-    /// emit socket event to join room
     socket.emit("user:send_event", user);
   };
 
   return (
-    <Box minHeight="100vh">
+    <Box minHeight='100vh'>
       <Center pt={10}>
         <Heading>Scan Success!</Heading>
       </Center>
-      <Center flexDirection="column" pt={10}>
+      <Center flexDirection='column' pt={10}>
         <Avatar
-          name="Dan Abrahmov"
+          name='Dan Abrahmov'
           src={`https://avatars.dicebear.com/api/jdenticon/${user.id}.svg`}
-          size="2xl"
+          size='2xl'
         />
-        <Text pt={5} fontSize="2em">
+        <Text pt={5} fontSize='2em'>
           {user.name}
         </Text>
       </Center>
-      <Center pt="100px">
-        <Stack direction="column" spacing={5} width={300}>
+      <Center pt='100px'>
+        <Stack direction='column' spacing={5} width={300}>
           <EventButton
-            header="Make an order"
+            header='Make an order'
             value={orderValue}
-            placeholder="Please enter what you would like to order!"
+            placeholder='Please enter what you would like to order!'
             setValue={setOrderValue}
-            buttonText="Make an order"
+            buttonText='Make an order'
             icon={<FaPencilAlt />}
             handleSendEvent={handleSendEvent}
-            operation={eventTypeEnum.ORDER}
+            operation={EventType.Order}
           />
 
           <Button
             onClick={onOpen}
             leftIcon={<FaMoneyBillAlt />}
-            colorScheme="teal"
-            variant="solid"
+            colorScheme='teal'
+            variant='solid'
           >
             Make payment
           </Button>
@@ -91,25 +90,25 @@ export default function UserViewPage() {
               <ModalCloseButton />
               <ModalBody>
                 <RadioGroup onChange={setPaymentValue} value={paymentValue}>
-                  <Stack direction="column">
-                    <Radio value="Cash">Cash</Radio>
-                    <Radio value="Credit">Credit</Radio>
-                    <Radio value="Debit">Debit</Radio>
+                  <Stack direction='column'>
+                    <Radio value='Cash'>Cash</Radio>
+                    <Radio value='Credit'>Credit</Radio>
+                    <Radio value='Debit'>Debit</Radio>
                   </Stack>
                 </RadioGroup>
               </ModalBody>
 
               <ModalFooter>
                 <Button
-                  colorScheme="blue"
+                  colorScheme='blue'
                   mr={3}
                   onClick={() => {
                     handleSendEvent({
                       created_at: new Date(Date.now()),
-                      type: eventTypeEnum.PAY_BILL,
+                      type: EventType.PayBill,
                       details: paymentValue,
                     });
-                    onClose()
+                    onClose();
                   }}
                 >
                   Submit
@@ -119,14 +118,14 @@ export default function UserViewPage() {
           </Modal>
 
           <EventButton
-            header="Message"
+            header='Message'
             value={messageValue}
-            placeholder="Please enter a message for your server!"
+            placeholder='Please enter a message for your server!'
             setValue={setMessageValue}
-            buttonText="Send message"
+            buttonText='Send message'
             icon={<BsChatTextFill />}
             handleSendEvent={handleSendEvent}
-            operation={eventTypeEnum.MESSAGE}
+            operation={EventType.Message}
           />
         </Stack>
       </Center>
@@ -150,8 +149,8 @@ const EventButton = ({
       <Button
         onClick={onOpen}
         leftIcon={icon}
-        colorScheme="teal"
-        variant="solid"
+        colorScheme='teal'
+        variant='solid'
       >
         {buttonText}
       </Button>
@@ -170,7 +169,7 @@ const EventButton = ({
 
           <ModalFooter>
             <Button
-              colorScheme="blue"
+              colorScheme='blue'
               mr={3}
               onClick={() => {
                 handleSendEvent({
@@ -178,7 +177,7 @@ const EventButton = ({
                   type: operation,
                   details: value,
                 });
-                onClose()
+                onClose();
               }}
             >
               Submit

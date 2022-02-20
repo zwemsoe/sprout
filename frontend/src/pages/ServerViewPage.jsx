@@ -17,16 +17,19 @@ import {
   Tr,
   Th,
   Td,
+  TableCaption,
 } from "@chakra-ui/react";
 import { useContext, useEffect, useState } from "react";
 import { SocketContext } from "../contexts/socket";
 import { useParams } from "react-router-dom";
 import { getLocalStorage, updateLocalStorage } from "../utils/localstorage";
+import { formatDetails, formatEvent } from "../utils/formatter";
 
 export default function ServerViewPage() {
   const { id } = useParams();
   const socket = useContext(SocketContext);
   const [user, setUser] = useState();
+  const [notiCount, setNotiCount] = useState(0);
 
   useEffect(() => {
     socket.emit("server:join_room", { id });
@@ -38,11 +41,18 @@ export default function ServerViewPage() {
       setUser(user);
     });
 
-    socket.on("web:save_event_data", (user) => {
-      let preExistingUser = getLocalStorage(user.id)
-      preExistingUser.events = [...user.events]
-      console.log(preExistingUser.events)
+    socket.on("web:notify_server", (user) => {
+      let preExistingUser = getLocalStorage(user.id);
+      if (preExistingUser.events.length < user.events.length) {
+        setNotiCount(user.events.length - preExistingUser.events.length);
+        setTimeout(() => {
+          setNotiCount(0);
+        }, 60000);
+      }
+      preExistingUser.events = [...user.events];
       updateLocalStorage(user.id, preExistingUser);
+      const new_user = getLocalStorage(user.id);
+      setUser(new_user);
     });
   }, []);
 
@@ -64,25 +74,29 @@ export default function ServerViewPage() {
               <Box flex='1' textAlign='left'>
                 <Stack direction='row' spacing={7}>
                   <Avatar
-                    name='Dan Abrahmov'
+                    name={user?.name}
                     src={`https://avatars.dicebear.com/api/jdenticon/${user?.id}.svg`}
                     size='lg'
                   >
-                    <AvatarBadge
-                      borderColor='papayawhip'
-                      bg='tomato'
-                      boxSize='1.25em'
-                      p={2}
-                    >
-                      <Text fontSize='1rem'>1</Text>
-                    </AvatarBadge>
+                    {notiCount !== 0 && (
+                      <AvatarBadge
+                        borderColor='papayawhip'
+                        bg='tomato'
+                        boxSize='1.25em'
+                        p={2}
+                      >
+                        <Text fontSize='1rem'>{notiCount}</Text>
+                      </AvatarBadge>
+                    )}
                   </Avatar>
                   <Center>
                     <Box flexDirection='column' textAlign='left'>
                       <Heading as='h6' size='md'>
                         {user?.name}
                       </Heading>
-                      <Text size='md'>Impairments</Text>
+                      <Text size='md'>{`${Object.keys(user ? user.needs : [])
+                        .map((n) => `${n.charAt(0).toUpperCase() + n.slice(1)}`)
+                        .join(", ")} Impairments`}</Text>
                     </Box>
                   </Center>
                 </Stack>
@@ -91,28 +105,41 @@ export default function ServerViewPage() {
             </AccordionButton>
 
             <AccordionPanel pb={4}>
-              <Table variant='simple'>
-                <Thead>
-                  <Tr>
-                    <Th>Timestamp</Th>
-                    <Th>Event</Th>
-                  </Tr>
-                </Thead>
-                <Tbody>
-                  <Tr>
-                    <Td>inches</Td>
-                    <Td>millimetres (mm)</Td>
-                  </Tr>
-                  <Tr>
-                    <Td>feet</Td>
-                    <Td>centimetres (cm)</Td>
-                  </Tr>
-                  <Tr>
-                    <Td>yards</Td>
-                    <Td>metres (m)</Td>
-                  </Tr>
-                </Tbody>
-              </Table>
+              <Box overflowY='auto' maxHeight='60vh'>
+                <Table variant='simple'>
+                  <TableCaption>Event history</TableCaption>
+                  <Thead position='sticky' top={0} bg='white'>
+                    <Tr>
+                      <Th>Timestamp</Th>
+                      <Th>Event</Th>
+                      <Th>Details</Th>
+                    </Tr>
+                  </Thead>
+                  <Tbody>
+                    {user?.events.map(
+                      ({ type, created_at, details }, index) => (
+                        <Tr
+                          bg={
+                            index >= user.events.length - notiCount
+                              ? "orange.200"
+                              : "white"
+                          }
+                        >
+                          <Td>
+                            {
+                              new Date(created_at)
+                                .toLocaleString()
+                                .split(", ")[1]
+                            }
+                          </Td>
+                          <Td>{formatEvent(type)}</Td>
+                          <Td>{formatDetails(type, details)}</Td>
+                        </Tr>
+                      )
+                    )}
+                  </Tbody>
+                </Table>
+              </Box>
             </AccordionPanel>
           </AccordionItem>
         </Accordion>

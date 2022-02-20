@@ -27,7 +27,7 @@ export default function QRCodePage() {
           <Wrap>
             <WrapItem>
               <Avatar
-                name='Dan Abrahmov'
+                name={user.name}
                 src={`https://avatars.dicebear.com/api/jdenticon/${user.id}.svg`}
                 size='2xl'
               />{" "}

@@ -9,11 +9,11 @@ module.exports = (socket, io) => {
   });
 
   socket.on("user:send_event", (user) => {
-    socket.to(user.id).emit("web:save_event_data", user)
-  })
+    socket.to(user.id).emit("web:notify_server", user);
+  });
 
   //user leaves
   socket.on("disconnect", (reason) => {
-    console.log("disconnecting: ");
+    console.log("disconnecting ");
   });
 };
