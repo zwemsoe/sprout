@@ -26,13 +26,11 @@ import { useContext, useEffect, useState } from "react";
 import { EventType } from "../constants";
 
 export default function UserViewPage() {
+  const socket = useContext(SocketContext);
   const user = getLocalStorage("user");
   const [orderValue, setOrderValue] = useState("");
   const [paymentValue, setPaymentValue] = useState("");
   const [messageValue, setMessageValue] = useState("");
-  const { isOpen, onOpen, onClose } = useDisclosure();
-
-  const socket = useContext(SocketContext);
 
   useEffect(() => {
     socket.on("web:get_user_data", () => {
@@ -50,45 +48,42 @@ export default function UserViewPage() {
   return (
     <Flex minHeight="100vh" align="center" justify="center">
       <Stack direction="column" width={300}>
-      <Center>
-        <Heading>Scan Success!</Heading>
-      </Center>
-      <Center flexDirection="column" pt={10}>
-        <Avatar
-          name={`${user.name}`}
-          src={`https://avatars.dicebear.com/api/jdenticon/${user.id}.svg`}
-          size="2xl"
-        />
-        <Text pt={5} fontSize="2em">
-          {user.name}
-        </Text>
-      </Center>
-      <Center pt={10}>
-        <Stack direction="column" spacing={5} width={300}>
-          <EventButton
-            header="Make an order"
-            value={orderValue}
-            placeholder="Please enter what you would like to order!"
-            setValue={setOrderValue}
-            buttonText="Make an order"
-            icon={<FaPencilAlt />}
-            handleSendEvent={handleSendEvent}
-            operation={EventType.Order}
+        <Center>
+          <Heading>Scan Success!</Heading>
+        </Center>
+        <Center flexDirection="column" pt={10}>
+          <Avatar
+            name={`${user.name}`}
+            src={`https://avatars.dicebear.com/api/jdenticon/${user.id}.svg`}
+            size="2xl"
           />
-          <Button
-            onClick={onOpen}
-            leftIcon={<FaMoneyBillAlt />}
-            bgColor="yellow"
-            variant="solid"
-          >
-            Make payment
-          </Button>
-          <Modal isOpen={isOpen} onClose={onClose}>
-            <ModalOverlay />
-            <ModalContent>
-              <ModalHeader>Choose your payment method:</ModalHeader>
-              <ModalCloseButton />
-              <ModalBody>
+          <Text pt={5} fontSize="2em">
+            {user.name}
+          </Text>
+        </Center>
+        <Center pt={10}>
+          <Stack direction="column" spacing={5} width={300}>
+            <EventButton
+              header="Make an order:"
+              buttonText="Make an order"
+              icon={<FaPencilAlt />}
+              handleSendEvent={handleSendEvent}
+              operation={EventType.Order}
+              inputGroup={
+                <Textarea
+                  value={orderValue}
+                  onChange={(e) => setOrderValue(e.target.value)}
+                  placeholder="Please enter what you would like to order!"
+                />
+              }
+            />
+            <EventButton
+              header="Choose your payment method:"
+              buttonText="Make payment"
+              icon={<FaMoneyBillAlt />}
+              handleSendEvent={handleSendEvent}
+              operation={EventType.PayBill}
+              inputGroup={
                 <RadioGroup onChange={setPaymentValue} value={paymentValue}>
                   <Stack direction="column">
                     <Radio value="Cash">Cash</Radio>
@@ -96,37 +91,24 @@ export default function UserViewPage() {
                     <Radio value="Debit">Debit</Radio>
                   </Stack>
                 </RadioGroup>
-              </ModalBody>
-              <ModalFooter>
-                <Button
-                  colorScheme="blue"
-                  mr={3}
-                  onClick={() => {
-                    handleSendEvent({
-                      created_at: new Date(Date.now()),
-                      type: EventType.PayBill,
-                      details: paymentValue,
-                    });
-                    onClose();
-                  }}
-                >
-                  Submit
-                </Button>
-              </ModalFooter>
-            </ModalContent>
-          </Modal>
-          <EventButton
-            header="Message"
-            value={messageValue}
-            placeholder="Please enter a message for your server!"
-            setValue={setMessageValue}
-            buttonText="Send message"
-            icon={<BsChatTextFill />}
-            handleSendEvent={handleSendEvent}
-            operation={EventType.Message}
-          />
-        </Stack>
-      </Center>
+              }
+            />
+            <EventButton
+              header="Message"
+              buttonText="Send message:"
+              icon={<BsChatTextFill />}
+              handleSendEvent={handleSendEvent}
+              operation={EventType.Message}
+              inputGroup={
+                <Textarea
+                  value={messageValue}
+                  onChange={(e) => setMessageValue(e.target.value)}
+                  placeholder="Please enter a message for your server!"
+                />
+              }
+            />
+          </Stack>
+        </Center>
       </Stack>
     </Flex>
   );

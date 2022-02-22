@@ -2,30 +2,11 @@ const express = require("express");
 const cors = require("cors");
 const socket = require("./socket");
 const { createServer } = require("http");
-// const mongoose = require("mongoose");
 const { nanoid } = require("nanoid");
 const { client_url } = require("./constants");
 
 const app = express();
 const server = createServer(app);
-
-/*** CONNECT TO MONGODB DATATBASE HERE ***/
-
-// mongoose.Promise = global.Promise;
-// mongoose
-//   .connect("insert Mongo URI here", {
-//     useNewUrlParser: true,
-//     useUnifiedTopology: true,
-//     useFindAndModify: false,
-//   })
-//   .then(() => {
-//     console.info("BACKEND: Connected to MongoDB");
-
-//   })
-//   .catch((err) => {
-//     console.error(err.message);
-//     console.error(`BACKEND: Failed to connect to MongoDB`);
-//   });
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));

@@ -25,3 +25,6 @@ export const formatDetails = (type, details = "") => {
       return "";
   }
 };
+
+export const formatEventTime = (timestamp) =>
+  new Date(timestamp).toLocaleString().split(", ")[1];

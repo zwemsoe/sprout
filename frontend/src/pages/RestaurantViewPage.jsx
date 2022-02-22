@@ -24,16 +24,20 @@ import { useContext, useEffect, useState } from "react";
 import { SocketContext } from "../contexts/socket";
 import { useParams } from "react-router-dom";
 import { getLocalStorage, updateLocalStorage } from "../utils/localstorage";
-import { formatDetails, formatEvent } from "../utils/formatter";
+import {
+  formatDetails,
+  formatEvent,
+  formatEventTime,
+} from "../utils/formatter";
 
-export default function ServerViewPage() {
+export default function RestaurantViewPage() {
   const { id } = useParams();
   const socket = useContext(SocketContext);
   const [user, setUser] = useState();
   const [notiCount, setNotiCount] = useState(0);
 
   useEffect(() => {
-    socket.emit("server:join_room", { id });
+    socket.emit("restaurant:join_room", { id });
   }, []);
 
   useEffect(() => {
@@ -60,7 +64,7 @@ export default function ServerViewPage() {
   return (
     <Flex minHeight="100vh" align="center" justify="center">
       <Stack direction="column" width={300}>
-        <Center textAlign='center'>
+        <Center textAlign="center">
           <Heading>Customer Notifications</Heading>
         </Center>
         <Center pt={10}>
@@ -96,7 +100,8 @@ export default function ServerViewPage() {
                         <Heading as="h6" size="md">
                           {user?.name}
                         </Heading>
-                        <Text size="md">{`${Object.keys(user ? user.needs : []).filter((n) => user.needs[n])
+                        <Text size="md">{`${Object.keys(user ? user.needs : [])
+                          .filter((n) => user.needs[n])
                           .map(
                             (n) => `${n.charAt(0).toUpperCase() + n.slice(1)}`
                           )
@@ -129,13 +134,7 @@ export default function ServerViewPage() {
                                 : "white"
                             }
                           >
-                            <Td>
-                              {
-                                new Date(created_at)
-                                  .toLocaleString()
-                                  .split(", ")[1]
-                              }
-                            </Td>
+                            <Td>{formatEventTime(created_at)}</Td>
                             <Td>{formatEvent(type)}</Td>
                             <Td>{formatDetails(type, details)}</Td>
                           </Tr>

@@ -1,5 +1,5 @@
 module.exports = (socket, io) => {
-  socket.on("server:join_room", ({ id }) => {
+  socket.on("restaurant:join_room", ({ id }) => {
     socket.join(id);
     socket.to(id).emit("web:get_user_data");
   });

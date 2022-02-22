@@ -11,7 +11,7 @@ module.exports = (server) => {
 
   io.on("connection", (socket) => {
     require("./event-handlers/user")(socket, io);
-    require("./event-handlers/server")(socket, io);
+    require("./event-handlers/restaurant")(socket, io);
   });
 
   return io;
