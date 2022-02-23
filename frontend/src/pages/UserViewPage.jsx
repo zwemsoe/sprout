@@ -69,6 +69,7 @@ export default function UserViewPage() {
               icon={<FaPencilAlt />}
               handleSendEvent={handleSendEvent}
               operation={EventType.Order}
+              value={orderValue}
               inputGroup={
                 <Textarea
                   value={orderValue}
@@ -81,6 +82,7 @@ export default function UserViewPage() {
               header="Choose your payment method:"
               buttonText="Make payment"
               icon={<FaMoneyBillAlt />}
+              value={paymentValue}
               handleSendEvent={handleSendEvent}
               operation={EventType.PayBill}
               inputGroup={
@@ -99,6 +101,7 @@ export default function UserViewPage() {
               icon={<BsChatTextFill />}
               handleSendEvent={handleSendEvent}
               operation={EventType.Message}
+              value={messageValue}
               inputGroup={
                 <Textarea
                   value={messageValue}
@@ -117,12 +120,11 @@ export default function UserViewPage() {
 const EventButton = ({
   header,
   value,
-  placeholder,
-  setValue,
   buttonText,
   icon,
   handleSendEvent,
   operation,
+  inputGroup,
 }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   return (
@@ -135,13 +137,7 @@ const EventButton = ({
         <ModalContent>
           <ModalHeader>{header}</ModalHeader>
           <ModalCloseButton />
-          <ModalBody>
-            <Textarea
-              value={value}
-              onChange={(e) => setValue(e.target.value)}
-              placeholder={placeholder}
-            />
-          </ModalBody>
+          <ModalBody>{inputGroup}</ModalBody>
           <ModalFooter>
             <Button
               colorScheme="blue"
