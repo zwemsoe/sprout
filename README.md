@@ -1,7 +1,6 @@
 ## Inspiration
 
 With the COVID-19 pandemic, getting your vaccine passport scanned is the new norm when dining in at a restaurant. This is what inspired the Accessibility Passport, which uses a QR code to open a communication port between customers with various accessibility needs and the restaurant staff without having to pre-download a mobile application. With a quick scan of a QR code, the waiters are notified in real-time whenever a customer wants to make an order, pay their bill or call over for help at a restaurant.
-
 ## What it does
 
 Our application, Accessibility Passport, tries to bridge the communication gap between people affected by Speech, Hearing or Motor impairments that want to enjoy a delicious meal at their favourite restaurant and the waiters there by providing a common platform that gets rid of uncertainty about the order or any sort of service provided. We are trying to ensure that the user has a very smooth experience and leaves the restaurant more than satisfied. The user can sign up on our web application that generates a unique QR code which is then scanned by their waiter at the restaurant. After the waiter scans it, the user is able to make an order, send a message to the waiter about something and when they are done with their meal, they can let the waiter know their choice of payment method as well.
@@ -38,6 +37,3 @@ Our immediate next steps would be to implement exciting features such as multipl
 <img width="353" alt="Screen Shot 2022-02-20 at 8 13 30 AM" src="https://user-images.githubusercontent.com/23249184/154854330-8f269737-06d0-48d9-8f57-844c78c26578.png">
 <img width="353" alt="Screen Shot 2022-02-20 at 8 13 17 AM" src="https://user-images.githubusercontent.com/23249184/154854331-18c6ee0c-817b-4afb-af01-a77b409d4b83.png">
 <img width="351" alt="Screen Shot 2022-02-20 at 8 12 57 AM" src="https://user-images.githubusercontent.com/23249184/154854332-6673c263-5dbf-4f69-9e81-68f92ef510e2.png">
-
-## Video
-You can find the demo video here: https://youtu.be/SiscyXqZqdw
