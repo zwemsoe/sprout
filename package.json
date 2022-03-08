@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "setup": "npm install --prefix frontend && npm install --prefix backend && npm install",
-    "dev": "concurrently -p \"[{name}]\" -n \"BACKEND,FRONTEND\" -c \"bgBlue.bold,bgYellow.bold\" \"npm run dev --prefix backend\" \"npm run dev --prefix frontend\""
+    "setup": "npm install --prefix frontend/app && npm install --prefix backend && npm install",
+    "dev": "concurrently -p \"[{name}]\" -n \"BACKEND,FRONTEND\" -c \"bgBlue.bold,bgYellow.bold\" \"npm run dev --prefix backend\" \"npm run dev --prefix frontend/app\""
   },
   "repository": {
     "type": "git",
