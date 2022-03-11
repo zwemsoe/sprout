@@ -1,8 +1,10 @@
-const { Server } = require("socket.io");
-const { client_url } = require("./constants");
+import { Server } from "socket.io";
+import { client_url } from "./constants.js";
+import userEventHandler from "./event-handlers/user.js";
+import resturantEventHandler from "./event-handlers/restaurant.js";
 const url = client_url;
 
-module.exports = (server) => {
+export default function socket(server) {
   const io = new Server(server, {
     cors: {
       origin: url,
@@ -10,9 +12,13 @@ module.exports = (server) => {
   });
 
   io.on("connection", (socket) => {
-    require("./event-handlers/user")(socket, io);
-    require("./event-handlers/restaurant")(socket, io);
+    userEventHandler(socket, io);
+    resturantEventHandler(socket, io);
+
+    socket.on("disconnect", (reason) => {
+      console.log("disconnecting ");
+    });
   });
 
   return io;
-};
+}

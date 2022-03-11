@@ -1,11 +1,8 @@
-module.exports = (socket, io) => {
-  socket.on("restaurant:join_room", ({ id }) => {
-    socket.join(id);
-    socket.to(id).emit("web:get_user_data");
-  });
+import { setRoom } from "../utils.js";
 
-  //user leaves
-  socket.on("disconnect", (reason) => {
-    console.log("disconnecting ");
+export default function resturantEventHandler(socket, io) {
+  socket.on("restaurant:join_room", (restaurant) => {
+    socket.join(restaurant.id);
+    setRoom(restaurant);
   });
-};
+}
