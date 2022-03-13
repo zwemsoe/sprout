@@ -10,6 +10,21 @@ const styles = StyleSheet.create({
   },
 });
 
+const needsInput = [
+  {
+    label: "Speech impairment",
+    key: "speech",
+  },
+  {
+    label: "Hearing impairment",
+    key: "hearing",
+  },
+  {
+    label: "Motor impairment",
+    key: "motor",
+  },
+];
+
 export default function SignUp({ navigation }) {
   const pressHandler = () => {
     navigation.push("Scan Page");
@@ -17,6 +32,11 @@ export default function SignUp({ navigation }) {
 
   const [user, setUser] = useState();
   const [restaurant, setRestaurant] = useState();
+  const [needs, setNeeds] = useState({
+    speech: false,
+    hearing: false,
+    motor: false,
+  });
 
   return (
     <Box style={styles.container}>
@@ -25,20 +45,22 @@ export default function SignUp({ navigation }) {
           <FormControl.Label>Full Name</FormControl.Label>
           <Input placeHolder="Name" />
           <FormControl.HelperText>Enter your full name.</FormControl.HelperText>
-          <Checkbox.Group>
-            <Checkbox value="Hearing">
-              Hearing Impairment
+          {needsInput.map(({ label, key }) => (
+            <Checkbox
+              key={key}
+              onPress={() =>
+                setNeeds((prevNeeds) => ({
+                  ...prevNeeds,
+                  [key]: !prevNeeds[key],
+                }))
+              }
+            >
+              {label}
             </Checkbox>
-            <Checkbox value="Speech">
-              Speech Impairment
-            </Checkbox>
-            <Checkbox value="Motor">
-              Motor Impairment
-            </Checkbox>
-          </Checkbox.Group>
-          <Button onPress={pressHandler}>Sign Up as Customer</Button>
+          ))}
         </VStack>
       </FormControl>
+      <Button onPress={pressHandler}>Sign Up as Customer?</Button>
       <Button>Sign Up as Restaurant</Button>
     </Box>
   );

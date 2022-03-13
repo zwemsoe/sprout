@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "concurrently -p \"[{name}]\" -n \"BACKEND,FRONTEND\" -c \"bgBlue.bold,bgYellow.bold\" \"pnpm dev --filter backend\" \"pnpm dev --filter app\""
+    "dev": "concurrently -p \"[{name}]\" -n \"BACKEND,FRONTEND\" -c \"bgBlue.bold,bgYellow.bold\" \"npm run dev --prefix backend\" \"npm run dev --prefix frontend/app\"",
+    "setup": "npm install --prefix frontend/app --legacy-peer-deps && npm install --prefix backend && npm install"
   },
   "repository": {
     "type": "git",
