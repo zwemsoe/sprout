@@ -1,9 +1,9 @@
-const express = require("express");
-const cors = require("cors");
-const socket = require("./socket");
-const { createServer } = require("http");
-const { nanoid } = require("nanoid");
-const { client_url } = require("./constants");
+import express from "express";
+import cors from "cors";
+import socket from "./socket.js";
+import { createServer } from "http";
+import { nanoid } from "nanoid";
+import { client_url } from "./constants.js";
 
 const app = express();
 const server = createServer(app);
@@ -22,11 +22,15 @@ app.get("/", (req, res) => {
   res.send(`Hello world.`);
 });
 
-app.post("/signup", (req, res) => {
-  const id = nanoid();
-  let events = [];
-  res.send({ ...req.body, id, events });
-});
+// app.post("/restaurant/signup", (req, res) => {
+//   const id = nanoid();
+//   res.send({ ...req.body, id });
+// });
+
+// app.post("/user/signup", (req, res) => {
+//   const id = nanoid();
+//   res.send({ ...req.body, id, events });
+// });
 
 const port = process.env.PORT || 5000;
 server.listen(port, () => {
