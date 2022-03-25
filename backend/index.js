@@ -2,7 +2,6 @@ import express from "express";
 import cors from "cors";
 import socket from "./socket.js";
 import { createServer } from "http";
-import { nanoid } from "nanoid";
 import { client_url } from "./constants.js";
 
 const app = express();
