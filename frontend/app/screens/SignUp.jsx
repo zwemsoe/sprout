@@ -1,4 +1,4 @@
-// Signup as either restaurant or user
+// Signup as either restaurant or customer
 import { StyleSheet } from "react-native";
 import {
   Box,
@@ -10,6 +10,15 @@ import {
   Text,
 } from "native-base";
 import { useState } from "react";
+import { customAlphabet } from "nanoid/non-secure";
+import { getAuth, storeAuth } from "../utils";
+import { useStateContext } from "../store/provider";
+import { SET_AUTH } from "../store/actions";
+
+const nanoid = customAlphabet(
+  "abcdefghijklmnopqrstuvwxyzQWERTYUIOPASDFGHJKLZXCVBNM0123456789",
+  10
+);
 
 const styles = StyleSheet.create({
   container: {
@@ -34,15 +43,27 @@ const needsInput = [
 ];
 
 export default function SignUp({ navigation }) {
+  const [_, dispatch] = useStateContext();
+
   const handleCustomerSignUp = () => {
-    navigation.push("ScanPage");
+    if (customer) {
+      navigation.push("Customer", { screen: "ScanPage" });
+    }
   };
-  const handleRestaurantSignUp = () => {
-    navigation.push("QRCodePage");
+  const handleRestaurantSignUp = async () => {
+    if (restaurant) {
+      storeAuth("restaurant", { name: restaurant, id: nanoid() });
+      const auth = await getAuth();
+      dispatch({
+        type: SET_AUTH,
+        auth,
+      });
+      navigation.push("Restaurant", { screen: "QRCodePage" });
+    }
   };
 
-  const [user, setUser] = useState();
-  const [restaurant, setRestaurant] = useState();
+  const [customer, setCustomer] = useState();
+  const [restaurant, setRestaurant] = useState("");
   const [needs, setNeeds] = useState({
     speech: false,
     hearing: false,
@@ -55,7 +76,7 @@ export default function SignUp({ navigation }) {
         <VStack space={3}>
           <FormControl isRequired>
             <FormControl.Label>Full Name</FormControl.Label>
-            <Input placeHolder="Name" onChangeText={(text) => setUser(text)} />
+            <Input placeHolder="Name" onChangeText={(text) => setCustomer(text)} />
             <FormControl.HelperText>
               Enter your full name.
             </FormControl.HelperText>
