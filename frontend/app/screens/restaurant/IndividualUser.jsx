@@ -70,7 +70,7 @@ export default function IndividualUserPage() {
         >
           <VStack flex="1">
             {[...Array(20).keys()].map((key, index) => (
-              <Center py="4">
+              <Center key={index} py="4">
                 <Event type="PAY_BILL" />
               </Center>
             ))}

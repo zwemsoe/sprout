@@ -4,12 +4,13 @@ import AuthStack from "./routes/AuthStack";
 import QRCodePage from "./screens/restaurant/QRCode";
 import RoomPage from "./screens/restaurant/Room";
 import IndividualUserPage from "./screens/restaurant/IndividualUser";
+import ScanPage from "./screens/user/ScanPage";
 
 export default function App() {
   return (
     <NativeBaseProvider>
       <NavigationContainer>
-        <IndividualUserPage />
+        <AuthStack />
       </NavigationContainer>
     </NativeBaseProvider>
   );
