@@ -31,7 +31,8 @@
     "react-native-svg": "12.1.1",
     "react-native-web": "0.17.1",
     "react-qr-code": "^2.0.3",
-    "socket.io-client": "^4.4.1"
+    "socket.io-client": "^4.4.1",
+    "expo-camera": "~12.1.2"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9"

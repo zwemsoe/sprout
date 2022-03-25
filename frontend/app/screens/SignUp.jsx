@@ -1,4 +1,4 @@
-// Signup as either restaurant or user
+// Signup as either restaurant or customer
 import { StyleSheet } from "react-native";
 import {
   Box,
@@ -46,7 +46,9 @@ export default function SignUp({ navigation }) {
   const [_, dispatch] = useStateContext();
 
   const handleCustomerSignUp = () => {
-    navigation.push("ScanPage");
+    if (customer) {
+      navigation.push("Customer", { screen: "ScanPage" });
+    }
   };
   const handleRestaurantSignUp = async () => {
     if (restaurant) {
@@ -60,7 +62,7 @@ export default function SignUp({ navigation }) {
     }
   };
 
-  const [user, setUser] = useState();
+  const [customer, setCustomer] = useState();
   const [restaurant, setRestaurant] = useState("");
   const [needs, setNeeds] = useState({
     speech: false,
@@ -74,7 +76,7 @@ export default function SignUp({ navigation }) {
         <VStack space={3}>
           <FormControl isRequired>
             <FormControl.Label>Full Name</FormControl.Label>
-            <Input placeHolder="Name" onChangeText={(text) => setUser(text)} />
+            <Input placeHolder="Name" onChangeText={(text) => setCustomer(text)} />
             <FormControl.HelperText>
               Enter your full name.
             </FormControl.HelperText>

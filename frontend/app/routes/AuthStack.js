@@ -12,7 +12,7 @@ const Stack = createStackNavigator();
 export default function AuthStack() {
   return (
     <Stack.Navigator>
-      <Stack.Screen name="SignUp" component={SignUp} options={ScreenOptions} />
+      <Stack.Screen name="SignUp" component={SignUp} />
       <Stack.Screen
         name="Restaurant"
         component={RestaurantTabs}
