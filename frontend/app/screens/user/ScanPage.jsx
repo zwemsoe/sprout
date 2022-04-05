@@ -5,31 +5,31 @@ import { useEffect, useState } from "react";
 
 const styles = StyleSheet.create({
   container: {
-    display: 'flex',
+    display: "flex",
     width: "100%",
     height: "100%",
-    justifyContent: 'center'
+    justifyContent: "center",
   },
   camera: {
     height: "50%",
-    margin: 10
+    margin: 10,
   },
   buttonContainer: {
-    display: 'flex',
-    backgroundColor: 'transparent',
-    flexDirection: 'row',
+    display: "flex",
+    backgroundColor: "transparent",
+    flexDirection: "row",
     marginLeft: 10,
   },
   backButton: {
     flex: 0.1,
-    alignSelf: 'flex-start',
-    alignItems: 'center',
+    alignSelf: "flex-start",
+    alignItems: "center",
   },
   text: {
     fontSize: 20,
-    alignSelf: 'center',
-    marginTop: 20
-  }
+    alignSelf: "center",
+    marginTop: 20,
+  },
 });
 
 // Show camera to scan qr code, ask permission, click to scan
@@ -39,18 +39,18 @@ export default function ScanPage({ navigation }) {
   };
 
   const handleQRScan = ({ type, data }) => {
-    console.log(type)
-    console.log(data)
-  }
+    console.log(type);
+    console.log(data);
+  };
 
-  const [hasPermission, setHasPermission] = useState(null)
+  const [hasPermission, setHasPermission] = useState(null);
 
   useEffect(() => {
     (async () => {
-      const { status } = await Camera.requestCameraPermissionsAsync()
-      setHasPermission(status === 'granted')
-    })()
-  }, [])
+      const { status } = await Camera.requestCameraPermissionsAsync();
+      setHasPermission(status === "granted");
+    })();
+  }, []);
 
   if (hasPermission === null) {
     return <Box />;
@@ -61,10 +61,11 @@ export default function ScanPage({ navigation }) {
 
   return (
     <Box style={styles.container}>
-      <Box style={styles.buttonContainer}>
-        <Button style={styles.backButton} onPress={popHandler}>Back</Button>
-      </Box>
-      <Camera style={styles.camera} type={Camera.Constants.Type.back} onBarCodeScanned={handleQRScan} />
+      <Camera
+        style={styles.camera}
+        type={Camera.Constants.Type.back}
+        onBarCodeScanned={handleQRScan}
+      />
       <Text style={styles.text}>Please scan the restaurant's QR code</Text>
     </Box>
   );
