@@ -19,6 +19,7 @@ import {
   defaultRestaurant,
   needsInput,
 } from "../helpers/signup";
+import { useSocket } from "../contexts/socket";
 
 const nanoid = customAlphabet(
   "abcdefghijklmnopqrstuvwxyzQWERTYUIOPASDFGHJKLZXCVBNM0123456789",
@@ -86,6 +87,8 @@ const RestaurantSignUpForm = ({ handleSignUp, setRestaurant, handleBack }) => {
 
 export default function SignUp({ navigation }) {
   const [_, dispatch] = useStateContext();
+  const socket = useSocket();
+  const roomId = nanoid()
 
   const handleCustomerSignUp = async () => {
     if (customer) {
@@ -100,12 +103,13 @@ export default function SignUp({ navigation }) {
   };
   const handleRestaurantSignUp = async () => {
     if (restaurant) {
-      storeAuth("restaurant", { name: restaurant, id: nanoid() });
+      storeAuth("restaurant", { name: restaurant, id: roomId });
       const auth = await getAuth();
       dispatch({
         type: SET_AUTH,
         auth,
       });
+      socket.emit('restaurant:sign_up', { name: restaurant, id: roomId })
       navigation.push("Restaurant", { screen: "QRCodePage" });
     }
   };

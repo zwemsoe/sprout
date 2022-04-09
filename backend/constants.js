@@ -7,4 +7,4 @@ export const EventType = {
 export const client_url =
   process.env.NODE_ENV === "production"
     ? "https://accessibility-passport.netlify.app"
-    : "http://localhost:3000";
+    : "http://localhost:19002";
