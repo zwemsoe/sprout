@@ -5,4 +5,9 @@ export default function resturantEventHandler(socket, io) {
     socket.join(restaurant.id);
     setRoom(restaurant);
   });
+
+  socket.on('restaurant:sign_up', async room => {
+    console.log({...room, users: []})
+    await setRoom({...room, users: []});
+  })
 }
